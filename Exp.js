@@ -1,78 +1,81 @@
-let currentBalance = 0;
+ let currentBalance = 0;
 
-            function saveBudget() {
-                let userBudget = Number(document.querySelector("#budgetInput").value);
-                let budgetErrorMsg = document.querySelector("#budgetError");
-                let budgetDisplayEl = document.querySelector("#budgetDisplay");
+    function saveBudget() {
+        let userBudget = Number(document.querySelector("#budgetInput").value);
+        let budgetErrorMsg = document.querySelector("#budgetError");
+        let budgetDisplayEl = document.querySelector("#budgetDisplay");
 
-                if (isNaN(userBudget) || userBudget <= 0) {
-                    budgetErrorMsg.innerHTML = "Please enter a valid budget";
-                    return;
-                }
+        if (isNaN(userBudget) || userBudget <= 0) {
+            budgetErrorMsg.innerHTML = "Please enter a valid budget";
+            return;
+        }
 
-                budgetErrorMsg.innerHTML = "";
+        budgetErrorMsg.innerHTML = "";
 
-                localStorage.setItem("budget", userBudget);
-                budgetDisplayEl.innerHTML = "$" + userBudget;
+        // SESSION STORAGE
+        sessionStorage.setItem("budget", userBudget);
 
-                showTotal();
-            }
+        budgetDisplayEl.innerHTML = "$" + userBudget;
 
-            function addExpense() {
-                let expenseValue = Number(document.querySelector("#expenseInput").value);
-                let expenseErrorMsg = document.querySelector("#expenseError");
-                let expenseDisplayEl = document.querySelector("#expenseDisplay");
+        showTotal();
+    }
 
-                let storedBudget = Number(localStorage.getItem("budget")) || 0;
+    function addExpense() {
+        let expenseValue = Number(document.querySelector("#expenseInput").value);
+        let expenseErrorMsg = document.querySelector("#expenseError");
+        let expenseDisplayEl = document.querySelector("#expenseDisplay");
 
-                if (storedBudget === 0) {
-                    expenseErrorMsg.innerHTML = "Please save a budget first";
-                    return;
-                }
+        let storedBudget = Number(sessionStorage.getItem("budget")) || 0;
 
-                if (isNaN(expenseValue) || expenseValue <= 0 || expenseValue > currentBalance) {
-                    expenseErrorMsg.innerHTML = "Please enter a valid expense amount";
-                    return;
-                }
+        if (storedBudget === 0) {
+            expenseErrorMsg.innerHTML = "Please save a budget first";
+            return;
+        }
 
-                expenseErrorMsg.innerHTML = "";
+        if (isNaN(expenseValue) || expenseValue <= 0 || expenseValue > currentBalance) {
+            expenseErrorMsg.innerHTML = "Please enter a valid expense amount";
+            return;
+        }
 
-                let totalExpenses = Number(localStorage.getItem("expense")) || 0;
-                totalExpenses += expenseValue;
+        expenseErrorMsg.innerHTML = "";
 
-                localStorage.setItem("expense", totalExpenses);
-                expenseDisplayEl.innerHTML = "$" + totalExpenses;
+        let totalExpenses = Number(sessionStorage.getItem("expense")) || 0;
+        totalExpenses += expenseValue;
 
-                showTotal();
-            }
+        sessionStorage.setItem("expense", totalExpenses);
 
-            function showTotal() {
-                let storedBudget = Number(localStorage.getItem("budget")) || 0;
-                let storedExpense = Number(localStorage.getItem("expense")) || 0;
+        expenseDisplayEl.innerHTML = "$" + totalExpenses;
 
-                currentBalance = storedBudget - storedExpense;
+        showTotal();
+    }
 
-                document.querySelector("#remainingDisplay").innerHTML =
-                    "Remaining balance: $" + currentBalance;
-            }
+    function showTotal() {
+        let storedBudget = Number(sessionStorage.getItem("budget")) || 0;
+        let storedExpense = Number(sessionStorage.getItem("expense")) || 0;
 
-            function removeExpense() {
-                localStorage.removeItem("expense");
+        currentBalance = storedBudget - storedExpense;
 
-                document.querySelector("#expenseDisplay").innerHTML = "";
-                document.querySelector("#expenseInput").value = "";
+        document.querySelector("#remainingDisplay").innerHTML =
+            "Remaining balance: $" + currentBalance;
+    }
 
-                showTotal();
-            }
+    function removeExpense() {
+        sessionStorage.removeItem("expense");
 
-            window.onload = function () {
-                let storedBudgetValue = Number(localStorage.getItem("budget")) || 0;
-                let storedExpenseValue = Number(localStorage.getItem("expense")) || 0;
+        document.querySelector("#expenseDisplay").innerHTML = "";
+        document.querySelector("#expenseInput").value = "";
 
-                document.querySelector("#budgetDisplay").innerHTML = "$" + storedBudgetValue;
-                document.querySelector("#budgetInput").value = storedBudgetValue;
+        showTotal();
+    }
 
-                document.querySelector("#expenseDisplay").innerHTML = "$" + storedExpenseValue;
+    window.onload = function () {
+        let storedBudgetValue = Number(sessionStorage.getItem("budget")) || 0;
+        let storedExpenseValue = Number(sessionStorage.getItem("expense")) || 0;
 
-                showTotal();
-            };
+        document.querySelector("#budgetDisplay").innerHTML = "$" + storedBudgetValue;
+        document.querySelector("#budgetInput").value = storedBudgetValue;
+
+        document.querySelector("#expenseDisplay").innerHTML = "$" + storedExpenseValue;
+
+        showTotal();
+    };
