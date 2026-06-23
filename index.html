@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="Exp.css">
+        <title>Budget App</title>
+         
+ 
+    </head>
+
+    <body>
+        <div class="container">
+        <div class="con-son">
+        <div class="input-group">
+
+        <input id="budgetInput" type="number" placeholder="Set your budget...">
+        <button class="btn1" onclick="saveBudget()">Save Budget</button>
+        <div id="budgetDisplay"></div>
+        <div id="budgetError"></div>
+        <br>
+
+        <input id="expenseInput" type="number" placeholder="Amount to be consumed...">
+        <button class="btn2" onclick="addExpense()">Add Expense</button>
+
+        <div id="expenseDisplay"></div>
+        <button class="btn3" onclick="removeExpense()">Remove Expense</button>
+        <div id="expenseError"></div>
+        <br>
+
+        <div id="remainingDisplay"></div>
+
+        </div>
+        </div>
+        </div>
+    </body>
+</html>
